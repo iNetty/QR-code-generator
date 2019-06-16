@@ -1,7 +1,7 @@
 var currentIndex = 1;
 var workNumReg = /^T\d+$/;
 var linkAddressReg = /^(http(s?)):\/\/(?:[\w\-_]+\.)+[A-za-z]{2,4}(?:[\/\?#][\/=\?%\-&~`@\[\]\':+!\.#\w]*)?/;
-var WORK_ADDRESS = 'http://ozone.10jqka.com.cn/tg_templates/doubleone/2018/kh/hua-bao-an-hang-h5/index.html?employee_id=';
+
 $(document).ready(function() {
   // tab点击
   $('.container .tab-item').on('click', function() {
@@ -23,27 +23,45 @@ $(document).ready(function() {
 
   // 监听input的输入事件
   $('.container .input-area #work-num').on('change', function() {
-    if (!workNumReg.test($(this).val())) {
+
+	var workNum = $('.container .input-area #work-num').val();
+    //if (!workNumReg.test(workNum)) {
+    if (workNum == null) {
+		$('.container .input-area .work-num-tips')
+			.show()
+			.html('文本内容为空');
+		  return false;
+	}
+    else if (workNum!=null && workNum.length > 200) {
       $('.container .input-area .work-num-tips')
         .show()
-        .html('请输入正确的工号，例如T12313');
+        .html('文本长度超过200');
+      return false;
     } else {
       $('.container .input-area .work-num-tips').hide();
     }
+	
   });
   $('.container #work-num-to-qrcode').on('click', function() {
     var workNum = $('.container .input-area #work-num').val();
-    if (!workNumReg.test(workNum)) {
+    //if (!workNumReg.test(workNum)) {
+    if (workNum == null) {
+		$('.container .input-area .work-num-tips')
+			.show()
+			.html('文本内容为空');
+		  return false;
+	}
+    else if (workNum!=null && workNum.length > 200) {
       $('.container .input-area .work-num-tips')
         .show()
-        .html('请输入正确的工号，例如T12313');
+        .html('文本长度超过200');
       return false;
     } else {
       $('.container .input-area .work-num-tips').hide();
     }
     // 开始生成二维码
     $('.container #qrcode').empty();
-    var link = WORK_ADDRESS + workNum;
+    var link = workNum;
     var qrcode = new QRCode(document.getElementById('qrcode'), {
       text: link,
       width: 230,
